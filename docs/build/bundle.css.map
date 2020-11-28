@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "Timer.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\r\n    import { onMount, onDestroy } from 'svelte';\r\n    export let title;\r\n    export let offsetmin = 0;\r\n    export let offsetsec = 0;\r\n    let currenttime = new Date();\r\n    let arr = [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()];\r\n    let nextbooster = new Date();\r\n    let nextboosterstring;\r\n    arr.forEach(function(item, index, array) {\r\n        if (index!=0){\r\n            item.setDate(array[0].getDate()+index-1);\r\n            item.setHours(4, offsetmin, offsetsec, 0);\r\n        }\r\n    })\r\n    nextbooster.setHours(arr[0].getHours(), offsetmin, offsetsec, arr[0].getMilliseconds());\r\n\r\n    function getValue(time){\r\n        var a = Math.abs(arr[0] - time) / 1000 / 60;\r\n        var time = a / 60;\r\n        var min = a % 60;\r\n        var sec = a * 60 % 60;\r\n        return `${Math.floor(time)}시간 ${Math.floor(min)}분 ${Math.floor(sec)}초`\r\n    }\r\n\r\n    let t;\r\n    function timefunction(){\r\n        arr[0] = new Date();\r\n        nextboosterstring = getValue(nextbooster);\r\n        if (nextbooster < arr[0])\r\n            nextbooster.setHours(arr[0].getHours()+1, offsetmin, offsetsec, arr[0].getMilliseconds());\r\n    }\r\n    onMount(() => {\r\n        t = setInterval(timefunction,500);\r\n    })\r\n    onDestroy(() => {\r\n\t\tclearInterval(t);\r\n\t});\r\n</script>\r\n<h>{title} (다음 부스터 활성화: {nextboosterstring})</h>\r\n<br>\r\n{#each arr as item, i}\r\n    {#if (i == 1 && arr[0] < arr[1]) || i > 1}\r\n        {getValue(item)} {item} <br>\r\n    {/if}\r\n{/each}\r\n\r\n<style>\r\nh { \r\n    font-size: 20px;\r\n}\r\n</style>"
+  ],
+  "names": [],
+  "mappings": "AAgDA,CAAC,cAAC,CAAC,AACC,SAAS,CAAE,IAAI,AACnB,CAAC"
+}
