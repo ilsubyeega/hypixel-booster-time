@@ -1,0 +1,1 @@
+Imagine just calculating own forehead
